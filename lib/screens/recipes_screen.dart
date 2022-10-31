@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../mocks/recipe_data.dart';
+import '../styles/layout.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/recipe_tile.dart';
 
-class CategoryRecipesScreen extends StatelessWidget {
+class RecipesScreen extends StatelessWidget {
   // Can define the route name for each screen as a const
   // static allows you to access the variable w/o instantiating class
-  static const routeName = '/category_recipes_screen';
+  static const routeName = '/recipes_screen';
   // You can then refer to this variable in the main.dart route map
 
   // Typical class variables and constructor:
@@ -27,8 +29,8 @@ class CategoryRecipesScreen extends StatelessWidget {
     final routeArgs = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final String categoryId = routeArgs['id'].toString();
     final String categoryTitle = routeArgs['title'].toString();
-		
-    // "Query" the recipes for recipes with a category that matches
+
+    // "Query" RECIPE_DATA for recipes with a category that matches
     // the selected category
     // .where() requires a test or function and returns matches
     final categoryRecipes = RECIPE_DATA.where((recipe) {
@@ -38,29 +40,45 @@ class CategoryRecipesScreen extends StatelessWidget {
     }).toList();
 
     return Scaffold(
-      appBar: _buildAppBar(categoryTitle),
-      // Use ListView.builder to render only items that are on-screen
-      // and when you don't know the item count ahead of time
-      body: ListView.builder(
-        itemCount: categoryRecipes.length,
-        itemBuilder: (BuildContext context, int index) {
-          // categoryRecipes is based on a class with .variables
-          // not ['named'] variables like a Firebase Firestore
-          return RecipeTile(
+      appBar: CustomAppBar(context, categoryTitle),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: Layout.SPACING / 2,
+            horizontal: Layout.SPACING,
+          ),
+          child: Column(
+            children: [
+              _buildRecipeList(context, categoryRecipes),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecipeList(context, categoryRecipes) {
+    // Use ListView.builder to render only items that are on-screen
+    // and when you don't know the item count ahead of time
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: categoryRecipes.length,
+      itemBuilder: (BuildContext context, int index) {
+        // categoryRecipes is based on a class with .variables
+        // not ['named'] variables like a Firebase Firestore
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: Layout.SPACING / 2),
+          child: RecipeTile(
+            id: categoryRecipes[index].id,
             title: categoryRecipes[index].title,
             imageURL: categoryRecipes[index].imageUrl,
             duration: categoryRecipes[index].duration,
             complexity: categoryRecipes[index].complexity,
             affordability: categoryRecipes[index].affordability,
-          );
-        },
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(categoryTitle) {
-    return AppBar(
-      title: Text(categoryTitle),
+          ),
+        );
+      },
     );
   }
 }

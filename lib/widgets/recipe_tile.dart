@@ -5,6 +5,7 @@ import '../styles/layout.dart';
 import '../models/recipe.dart';
 
 class RecipeTile extends StatelessWidget {
+  final String id;
   final String title;
   final String imageURL;
   final int duration;
@@ -12,6 +13,7 @@ class RecipeTile extends StatelessWidget {
   final Affordability affordability;
 
   RecipeTile({
+    required this.id,
     required this.title,
     required this.imageURL,
     required this.duration,
@@ -51,8 +53,11 @@ class RecipeTile extends StatelessWidget {
   }
 
   void selectRecipe(context) {
-		Navigator.of(context).pushNamed(RecipeDetailScreen.routeName);
-	}
+    Navigator.of(context).pushNamed(
+      RecipeDetailScreen.routeName,
+      arguments: id,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +69,11 @@ class RecipeTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(Layout.RADIUS),
         ),
         elevation: Layout.ELEVATION,
-        margin: EdgeInsets.only(
-          top: Layout.SPACING,
-          left: Layout.SPACING,
-          right: Layout.SPACING,
-        ),
+        // margin: EdgeInsets.only(
+        //   top: Layout.SPACING,
+        //   // left: Layout.SPACING,
+        //   // right: Layout.SPACING,
+        // ),
         child: Column(
           children: <Widget>[
             Stack(
@@ -136,15 +141,15 @@ class RecipeTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _recipeInfoItem(context, Icons.schedule, '$duration min'),
-          _recipeInfoItem(context, Icons.work, complexityText),
-          _recipeInfoItem(context, Icons.attach_money, affordabilityText),
+          _footerItem(context, Icons.schedule, '$duration min'),
+          _footerItem(context, Icons.work, complexityText),
+          _footerItem(context, Icons.attach_money, affordabilityText),
         ],
       ),
     );
   }
 
-  Widget _recipeInfoItem(context, icon, text) {
+  Widget _footerItem(context, icon, text) {
     return Row(
       children: <Widget>[
         Icon(icon),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/category_recipes_screen.dart';
+import '../screens/recipes_screen.dart';
 import '../styles/layout.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -39,7 +39,7 @@ class CategoryTile extends StatelessWidget {
       // Using name from route map:
       //'/category_recipes_screen',
       // OR...from class routeName const (after importing class):
-      CategoryRecipesScreen.routeName,
+      RecipesScreen.routeName,
       arguments: {
         'id': categoryId,
         'title': categoryTitle,
@@ -59,38 +59,34 @@ class CategoryTile extends StatelessWidget {
       // Ideally border radius is same as child
       borderRadius: BorderRadius.circular(Layout.RADIUS),
       // Could use a card, but will use more customizable Container instead
-      child: Card(
-				elevation: Layout.ELEVATION,
-        shape: RoundedRectangleBorder(
+      child: Container(
+        padding: const EdgeInsets.all(Layout.PADDING),
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Layout.RADIUS),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(Layout.SPACING),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Layout.RADIUS),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                categoryColor.withOpacity(0.2),
-                categoryColor.withOpacity(0.8),
-              ],
-            ),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: categoryColor.withOpacity(0.5),
-            //     blurRadius: 3.0, // How blurry the effect is
-            //     spreadRadius: 3.0, // Size of shadow
-            //     // offset: Offset(5, 5), // changes position of shadow
-            //   ),
-            // ],
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              categoryColor.withOpacity(0.2),
+              categoryColor.withOpacity(0.8),
+            ],
           ),
-          child: Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              categoryTitle,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: categoryColor.withOpacity(0.5),
+          //     blurRadius: 3.0, // How blurry the effect is
+          //     spreadRadius: 3.0, // Size of shadow
+          //     // offset: Offset(5, 5), // changes position of shadow
+          //   ),
+          // ],
+        ),
+        child: Center(
+          // Center child horizontally AND vertically
+          heightFactor: double.infinity,
+          widthFactor: double.infinity,
+          child: Text(
+            categoryTitle,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ),
