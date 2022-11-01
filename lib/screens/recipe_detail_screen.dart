@@ -19,8 +19,12 @@ class RecipeDetailScreen extends StatelessWidget {
     // (eg, it only returns one recipe)
     final selectedRecipe = RECIPE_DATA.firstWhere((recipe) => recipe.id == recipeId);
     return Scaffold(
-      appBar: CustomAppBar(context, selectedRecipe.title),
+      appBar: CustomAppBar(appBar: AppBar(), title: selectedRecipe.title),
       body: _buildRecipeDetail(context, selectedRecipe),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.delete),
+      ),
     );
   }
 }
@@ -67,13 +71,7 @@ Widget _buildRecipeDetailTile(context, String title, List<String> details) {
             title,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          // const SizedBox(height: Layout.PADDING),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: Layout.SPACING / 2,
-            ),
-            child: const Divider(height: 10, thickness: 4),
-          ),
+          const SizedBox(height: Layout.PADDING),
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/categories_screen.dart';
+import 'screens/filter_screen.dart';
 import 'screens/nav_bar_screen.dart';
 import 'screens/recipe_detail_screen.dart';
 import 'screens/recipes_screen.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         // '/category_recipes_screen': (context) => CategoryRecipesScreen(),
         RecipesScreen.routeName: (context) => RecipesScreen(),
         RecipeDetailScreen.routeName: (context) => RecipeDetailScreen(),
+				FilterScreen.routeName: (context) => FilterScreen(),
       },
       // Flutter will default to onGenerateRoute (which returns a function w
       // MaterialPageRoute) if Dart tries to generate a pushNamed screen not

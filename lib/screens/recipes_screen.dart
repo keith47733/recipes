@@ -40,7 +40,7 @@ class RecipesScreen extends StatelessWidget {
     }).toList();
 
     return Scaffold(
-      appBar: CustomAppBar(context, categoryTitle),
+      appBar: CustomAppBar(appBar: AppBar(), title: categoryTitle),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -57,6 +57,10 @@ class RecipesScreen extends StatelessWidget {
     );
   }
 
+	// NOTE: YOU COULD OPTIMIZE THE APP HERE BY CREATING THIS AS A
+	// SEPARATE STATELESS WIDGET...ANYTIME YOU CALL OF(CONTEXT) WILL
+	// TRIGGER A REBUILD OF THIS ENTIRE SCREEN INSTEAD OF JUST THE BUILDER
+	// EG, IF THE THEME CHANGES AND AFFECTS CONTEXT
   Widget _buildRecipeList(context, categoryRecipes) {
     // Use ListView.builder to render only items that are on-screen
     // and when you don't know the item count ahead of time

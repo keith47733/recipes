@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_drawer.dart';
 import 'categories_screen.dart';
 import 'favourites_screen.dart';
 
@@ -38,9 +39,10 @@ class _NavBarScreenState extends State<NavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context, _screens[_selectedScreenIndex]['title']),
+      appBar: CustomAppBar(appBar: AppBar(), title: _screens[_selectedScreenIndex]['title']),
       // The body is set from the _screens mapping with the current state
       // of _selectedScreenIndex
+			drawer: CustomDrawer(),
       body: _screens[_selectedScreenIndex]['screen'],
       // For navigation tabs at the bottom use a BottomNavigationBar and
       // BottomNavigationBarItems. Note, the BottomNavigationBar is not
