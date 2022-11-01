@@ -11,6 +11,9 @@ class RecipeTile extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+	// This variable is used when a recipe_tile .pop()s with a recipeId
+	// to not display in the recipes screen (list)
+	final Function tempRemoveRecipe;
 
   RecipeTile({
     required this.id,
@@ -19,6 +22,7 @@ class RecipeTile extends StatelessWidget {
     required this.duration,
     required this.complexity,
     required this.affordability,
+		required this.tempRemoveRecipe,
   });
 
   String get complexityText {
@@ -53,9 +57,21 @@ class RecipeTile extends StatelessWidget {
   }
 
   void selectRecipe(context) {
-    Navigator.of(context).pushNamed(
+    // .pushNamed() returns a Future (indicated with -> Future<T> in docs)
+    // This command "completes" when the .pushNamed screen is no longer visible
+    // When "complete", .pushNamed returns an object(s)
+		// (null if not specified in .pop())
+    Navigator.of(context)
+        .pushNamed(
       RecipeDetailScreen.routeName,
       arguments: id,
+    )
+        .then(
+      (result) {
+				if (result != null) {
+					tempRemoveRecipe(result);
+				}
+      },
     );
   }
 
@@ -69,11 +85,6 @@ class RecipeTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(Layout.RADIUS),
         ),
         elevation: Layout.ELEVATION,
-        // margin: EdgeInsets.only(
-        //   top: Layout.SPACING,
-        //   // left: Layout.SPACING,
-        //   // right: Layout.SPACING,
-        // ),
         child: Column(
           children: <Widget>[
             Stack(
@@ -112,7 +123,8 @@ class RecipeTile extends StatelessWidget {
       // The container is required for the softWrap and overFlow Text arguments
       // As well background styling for white text
       child: Container(
-        width: 300,
+        width: MediaQuery.of(context).size.width * 0.7,
+				// width: 300,
         // Colors.black54 is black with 54%transparency
         // color: Colors.black54,
         padding: EdgeInsets.all(Layout.PADDING),
@@ -150,10 +162,10 @@ class RecipeTile extends StatelessWidget {
   }
 
   Widget _footerItem(context, icon, text) {
-    return Row(
+    return Column(
       children: <Widget>[
         Icon(icon),
-        SizedBox(width: Layout.SPACING / 3),
+        SizedBox(width: Layout.SPACING / 4),
         Text(
           text,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(

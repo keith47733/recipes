@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/recipes_screen.dart';
+import '../screens/recipe_list_screen.dart';
 import '../styles/layout.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -39,7 +39,7 @@ class CategoryTile extends StatelessWidget {
       // Using name from route map:
       //'/category_recipes_screen',
       // OR...from class routeName const (after importing class):
-      RecipesScreen.routeName,
+      RecipeListScreen.routeName,
       arguments: {
         'id': categoryId,
         'title': categoryTitle,

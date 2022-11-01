@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../mocks/category_data.dart';
+import '../models/recipe.dart';
 import '../styles/layout.dart';
 import '../widgets/category_tile.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+static const routeName = '/categories_screen';
 
   @override
   Widget build(BuildContext context) {

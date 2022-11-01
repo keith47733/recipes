@@ -54,7 +54,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
         // Have to style background color in each BottomNavigationBarItem
         // when using Type.shifting
         type: BottomNavigationBarType.shifting,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        // backgroundColor: Theme.of(context).colorScheme.primary,
         selectedItemColor: Theme.of(context).colorScheme.onPrimary,
         unselectedItemColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
         // You must tell the BottomNavigationBar what the currently
