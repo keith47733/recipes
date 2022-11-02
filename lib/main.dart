@@ -17,8 +17,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // main.dart was converted to Stateful widget in order to update
-  // the _filters Map with data received from FilterScreen
+  // USING SETSTATE() IN MAIN.DART WILL REBUILD ENTIRE APP
+  // WHICH IS NOT OPTIMAL - THERE ARE MUCH BETTER WAYS TO HANDLE STATE
+
+  // main.dart was converted to Stateful widget in order to use
+  // setState to update the _filters Map with data received from FilterScreen,
+  // favourites recipes, etc
+
   Map<String, bool> _filters = {
     'gluten': false,
     'lactose': false,
@@ -27,7 +32,29 @@ class _MyAppState extends State<MyApp> {
   };
   // Note, we'll now have to manage available meals in main.dart, not in
   // recipe list using RECIPE_DATA
-  List<Recipe> _availableRecipes = RECIPE_DATA;
+  List<Recipe> _availableRecipes = MOCK_RECIPE_DATA;
+  // Initially set _favouritedRecipes to empty[]
+  // Manage adding favourites in main.dart so it can be passed around
+  List<Recipe> _favouriteRecipes = [];
+
+  void _toggleFavourite(String currentRecipeId) {
+    final existingIndex = _favouriteRecipes.indexWhere((recipe) => recipe.id == currentRecipeId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favouriteRecipes.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        // Use MOCK_RECIPE_DATA so favourites can be picked from all recipes
+        // w/o the filter(s) applied
+        _favouriteRecipes.add(MOCK_RECIPE_DATA.firstWhere((recipe) => recipe.id == currentRecipeId));
+      });
+    }
+  }
+
+  bool _isRecipeFavourite(String currentRecipeId) {
+    return _favouriteRecipes.any((recipe) => recipe.id == currentRecipeId);
+  }
 
   // This method will be called when user clicks Apply Filters in
   // the FilterScreen
@@ -37,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       // map as _filters
       _filters = filterData;
       // .toList() converts the RECIPE_DATA map to a list
-      _availableRecipes = RECIPE_DATA.where((recipe) {
+      _availableRecipes = MOCK_RECIPE_DATA.where((recipe) {
         if (_filters['gluten'] == true && !recipe.isGlutenFree) {
           return false;
         }
@@ -50,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         if (_filters['vegetarian'] == true && !recipe.isVegetarian) {
           return false;
         }
-				return true;
+        return true;
       }).toList();
     });
   }
@@ -62,18 +89,20 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'RobotoCondensed',
-        useMaterial3: true,
-        colorScheme: lightColorScheme,
-        // Use only 2021 text types
+        // useMaterial3: true,
+        // colorScheme: lightColorScheme,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        // Use default 2021 text types
         textTheme: ThemeData.light().textTheme.copyWith(
-              bodySmall: TextStyle(
-                color: Color(0xFF79747E),
-              ),
               bodyMedium: TextStyle(
-                color: Color(0xFF79747E),
+                fontFamily: 'RobotoCondensed',
+                // color: Colors.white,
               ),
               bodyLarge: TextStyle(
-                color: Color(0xFF79747E),
+                fontFamily: 'RaleWay',
+              ),
+              titleMedium: TextStyle(
+                fontFamily: 'RaleWay',
               ),
               titleLarge: TextStyle(
                 fontFamily: 'RaleWay',
@@ -81,9 +110,10 @@ class _MyAppState extends State<MyApp> {
             ),
       ),
       darkTheme: ThemeData(
-        fontFamily: 'Raleway',
-        useMaterial3: true,
-        colorScheme: darkColorScheme,
+        fontFamily: 'RobotoCondensed',
+        // useMaterial3: true,
+        // colorScheme: darkColorScheme,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       // home: is the root screen of app
       // home: CategoriesScreen(),
@@ -92,11 +122,11 @@ class _MyAppState extends State<MyApp> {
       routes: {
         // The home: argument will default to '/': if not named above
         // '/': (context) => TabsScreen(),
-        '/': (context) => NavBarScreen(),
-        // '/category_recipes_screen': (context) => CategoryRecipesScreen(),
+        '/': (context) => NavBarScreen(_favouriteRecipes),
+        // '/category_recipes_screen': (context) => CategoriesScreen(),
         CategoriesScreen.routeName: (context) => CategoriesScreen(),
         RecipeListScreen.routeName: (context) => RecipeListScreen(_availableRecipes),
-        RecipeDetailScreen.routeName: (context) => RecipeDetailScreen(),
+        RecipeDetailScreen.routeName: (context) => RecipeDetailScreen(_toggleFavourite, _isRecipeFavourite),
         // For now, need to convert main.dart to Stateful widget
         // in order to pass/reflect changes data from FilterScreen to
         // RecipeListScreen using the _setFilters setState function,

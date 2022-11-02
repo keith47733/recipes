@@ -14,7 +14,7 @@ class RecipeListScreen extends StatefulWidget {
   // You can then refer to this variable in the main.dart route map
   static const routeName = '/recipes_screen';
 
-	List<Recipe>? availableRecipes;
+	final List<Recipe>? availableRecipes;
 
 	RecipeListScreen(this.availableRecipes);
 
@@ -83,7 +83,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         child: Padding(
           padding: const EdgeInsets.only(
             top: Layout.SPACING / 2,
-            bottom: Layout.SPACING,
+            bottom: Layout.SPACING / 2,
             left: Layout.SPACING,
             right: Layout.SPACING,
           ),
@@ -117,7 +117,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             duration: displayedRecipes[index].duration,
             complexity: displayedRecipes[index].complexity,
             affordability: displayedRecipes[index].affordability,
-            tempRemoveRecipe: _tempRemoveRecipe,
           ),
         );
       },

@@ -62,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
       leading: icon,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyLarge,
+        // style: Theme.of(context).textTheme.bodyLarge,
       ),
       onTap: tapHandler,
     );

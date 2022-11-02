@@ -17,6 +17,11 @@ class Recipe {
   final bool isLactoseFree;
   final bool isVegan;
   final bool isVegetarian;
+	// Note, storing isFavourite as a property of Recipe is not realistic because
+	// typically this information would be fetched from a database server. Thus,
+	// the data would not be user-specific. The last user's favourites would be
+	// fetched for the current user.
+	// Instead, manage a list of favourites in main.dart.
 
   const Recipe({
     required this.id,

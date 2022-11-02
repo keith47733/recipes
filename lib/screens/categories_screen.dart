@@ -6,7 +6,7 @@ import '../styles/layout.dart';
 import '../widgets/category_tile.dart';
 
 class CategoriesScreen extends StatelessWidget {
-static const routeName = '/categories_screen';
+  static const routeName = '/categories_screen';
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ static const routeName = '/categories_screen';
         mainAxisSpacing: Layout.SPACING,
       ),
       // Map each item of our CATEGORY_DATA to a function that creates a widget
-      children: CATEGORY_DATA
+      children: MOCK_CATEGORY_DATA
           .map(
             (categoryData) => CategoryTile(
               categoryId: categoryData.id,

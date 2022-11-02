@@ -37,7 +37,9 @@ class TabsScreen extends StatelessWidget {
 						// These screens should not include their own Scaffold - the
 						// Scaffold from this screen is used
             CategoriesScreen(),
-            FavouritesScreen(),
+						// Would need to pass favouriteRecipes from main.dart ->
+						// TabsScreen -> FavouritesScreen
+            // FavouritesScreen(), 
           ],
         ),
       ),

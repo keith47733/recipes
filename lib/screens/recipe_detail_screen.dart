@@ -6,7 +6,11 @@ import '../styles/layout.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
   static const routeName = '/recipe_detail_screen';
-  const RecipeDetailScreen({super.key});
+
+  final Function toggleFavourite;
+  final Function isRecipeFavourite;
+
+  const RecipeDetailScreen(this.toggleFavourite, this.isRecipeFavourite);
 
   @override
   Widget build(BuildContext context) {
@@ -17,52 +21,53 @@ class RecipeDetailScreen extends StatelessWidget {
     // firstWhere is run on each recipe object in RECIPE_DATA
     // (recipe) => must return true to return that recipe object
     // (eg, it only returns one recipe)
-    final selectedRecipe = RECIPE_DATA.firstWhere((recipe) => recipe.id == recipeId);
+    final selectedRecipe = MOCK_RECIPE_DATA.firstWhere((recipe) => recipe.id == recipeId);
+
     return Scaffold(
       appBar: CustomAppBar(appBar: AppBar(), title: selectedRecipe.title),
-      body: _buildRecipeDetail(context, selectedRecipe),
+      body: _buildRecipe(context, selectedRecipe),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-					// pop() removes top-most screen, dialog box, modal sheet, etc
-					// Can pass widgets, lists, variables, etc in pop(...)
-
-					Navigator.of(context).pop(recipeId);
-				},
-        child: Icon(Icons.delete),
+        onPressed: () => toggleFavourite(selectedRecipe.id),
+        // {
+        //   // pop() removes top-most screen, dialog box, modal sheet, etc
+        //   // Can pass widgets, lists, variables, etc in pop(...)
+        //   // Navigator.of(context).pop(recipeId);
+        // },
+        child: Icon(isRecipeFavourite(recipeId) ? Icons.star : Icons.star_border),
       ),
     );
   }
 }
 
-Widget _buildRecipeDetail(context, selectedRecipe) {
+Widget _buildRecipe(context, selectedRecipe) {
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.all(Layout.SPACING),
       child: Card(
-				elevation: Layout.ELEVATION,
+        elevation: Layout.ELEVATION,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Layout.RADIUS),
         ),
-				child: Column(
-					children: <Widget>[
-						_buildImage(context, selectedRecipe.imageUrl),
-						SizedBox(height: Layout.PADDING),
-						_buildRecipeDetailTile(context, 'Ingredients', selectedRecipe.ingredients),
-						SizedBox(height: Layout.PADDING),
-						_buildRecipeDetailTile(context, 'Instructions', selectedRecipe.steps),
-					],
-				),
-			),
+        child: Column(
+          children: <Widget>[
+            _buildImage(context, selectedRecipe.imageUrl),
+            SizedBox(height: Layout.PADDING),
+            _buildRecipeDetails(context, 'Ingredients', selectedRecipe.ingredients),
+            SizedBox(height: Layout.PADDING),
+            _buildRecipeDetails(context, 'Instructions', selectedRecipe.steps),
+          ],
+        ),
+      ),
     ),
   );
 }
 
 Widget _buildImage(context, String imageUrl) {
   return ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(Layout.RADIUS),
-        topRight: Radius.circular(Layout.RADIUS),
-      ),
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(Layout.RADIUS),
+      topRight: Radius.circular(Layout.RADIUS),
+    ),
     child: SizedBox(
       height: 300,
       width: double.infinity,
@@ -74,7 +79,7 @@ Widget _buildImage(context, String imageUrl) {
   );
 }
 
-Widget _buildRecipeDetailTile(context, String title, List<String> details) {
+Widget _buildRecipeDetails(context, String title, List<String> details) {
   return Padding(
     padding: const EdgeInsets.all(Layout.PADDING),
     child: Column(
@@ -94,9 +99,7 @@ Widget _buildRecipeDetailTile(context, String title, List<String> details) {
             return title == 'Ingredients'
                 ? Text(
                     '•    ${details[index]}',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black,
-                        ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   )
                 : ListTile(
                     leading: CircleAvatar(
@@ -104,9 +107,7 @@ Widget _buildRecipeDetailTile(context, String title, List<String> details) {
                     ),
                     title: Text(
                       details[index],
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.black,
-                          ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   );
           },

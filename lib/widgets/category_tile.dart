@@ -86,7 +86,7 @@ class CategoryTile extends StatelessWidget {
           widthFactor: double.infinity,
           child: Text(
             categoryTitle,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
       ),

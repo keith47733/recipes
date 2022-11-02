@@ -11,9 +11,9 @@ class RecipeTile extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-	// This variable is used when a recipe_tile .pop()s with a recipeId
-	// to not display in the recipes screen (list)
-	final Function tempRemoveRecipe;
+  // // This variable was used when a recipe_tile .pop()s with a recipeId
+  // // to not display in the recipes screen (list) - was changed to favourite
+  // final Function tempRemoveRecipe;
 
   RecipeTile({
     required this.id,
@@ -22,7 +22,6 @@ class RecipeTile extends StatelessWidget {
     required this.duration,
     required this.complexity,
     required this.affordability,
-		required this.tempRemoveRecipe,
   });
 
   String get complexityText {
@@ -60,19 +59,21 @@ class RecipeTile extends StatelessWidget {
     // .pushNamed() returns a Future (indicated with -> Future<T> in docs)
     // This command "completes" when the .pushNamed screen is no longer visible
     // When "complete", .pushNamed returns an object(s)
-		// (null if not specified in .pop())
+    // (null if not specified in .pop())
     Navigator.of(context)
         .pushNamed(
       RecipeDetailScreen.routeName,
       arguments: id,
-    )
-        .then(
-      (result) {
-				if (result != null) {
-					tempRemoveRecipe(result);
-				}
-      },
     );
+		// This was required for temporary removal of recipe - changed to
+		// favourite recipe
+    //     .then(
+    //   (result) {
+    //     if (result != null) {
+    //       tempRemoveRecipe(result);
+    //     }
+    //   },
+    // );
   }
 
   @override
@@ -124,7 +125,7 @@ class RecipeTile extends StatelessWidget {
       // As well background styling for white text
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
-				// width: 300,
+        // width: 300,
         // Colors.black54 is black with 54%transparency
         // color: Colors.black54,
         padding: EdgeInsets.all(Layout.PADDING),
@@ -168,9 +169,7 @@ class RecipeTile extends StatelessWidget {
         SizedBox(width: Layout.SPACING / 4),
         Text(
           text,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Colors.black,
-              ),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
     );
