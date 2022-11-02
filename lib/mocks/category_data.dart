@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/category.dart';
 
-// Using const requires that the Category model have const constructor
 const MOCK_CATEGORY_DATA = const [
   Category(
     id: 'c1',

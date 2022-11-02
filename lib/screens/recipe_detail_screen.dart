@@ -14,13 +14,7 @@ class RecipeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The recipe's ID is passed to the detail screen and used to retrieve
-    // detailed data for recipe
     final recipeId = ModalRoute.of(context)!.settings.arguments as String;
-    // firstWhere() return the first recipe that matches the recipeID
-    // firstWhere is run on each recipe object in RECIPE_DATA
-    // (recipe) => must return true to return that recipe object
-    // (eg, it only returns one recipe)
     final selectedRecipe = MOCK_RECIPE_DATA.firstWhere((recipe) => recipe.id == recipeId);
 
     return Scaffold(
@@ -28,11 +22,6 @@ class RecipeDetailScreen extends StatelessWidget {
       body: _buildRecipe(context, selectedRecipe),
       floatingActionButton: FloatingActionButton(
         onPressed: () => toggleFavourite(selectedRecipe.id),
-        // {
-        //   // pop() removes top-most screen, dialog box, modal sheet, etc
-        //   // Can pass widgets, lists, variables, etc in pop(...)
-        //   // Navigator.of(context).pop(recipeId);
-        // },
         child: Icon(isRecipeFavourite(recipeId) ? Icons.star : Icons.star_border),
       ),
     );
@@ -51,9 +40,9 @@ Widget _buildRecipe(context, selectedRecipe) {
         child: Column(
           children: <Widget>[
             _buildImage(context, selectedRecipe.imageUrl),
-            SizedBox(height: Layout.PADDING),
+            SizedBox(height: Layout.SPACING),
             _buildRecipeDetails(context, 'Ingredients', selectedRecipe.ingredients),
-            SizedBox(height: Layout.PADDING),
+            SizedBox(height: Layout.SPACING),
             _buildRecipeDetails(context, 'Instructions', selectedRecipe.steps),
           ],
         ),
@@ -81,33 +70,32 @@ Widget _buildImage(context, String imageUrl) {
 
 Widget _buildRecipeDetails(context, String title, List<String> details) {
   return Padding(
-    padding: const EdgeInsets.all(Layout.PADDING),
+    padding: const EdgeInsets.all(Layout.SPACING),
     child: Column(
       children: [
         Text(
           title,
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: Layout.PADDING),
+        const SizedBox(height: Layout.SPACING),
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: details.length,
           itemBuilder: (context, index) {
-            // Alternatively, you could pass a ListView widget to this
-            // _builder as an argument, Widget child, for this widget
             return title == 'Ingredients'
                 ? Text(
                     '•    ${details[index]}',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   )
                 : ListTile(
                     leading: CircleAvatar(
+											backgroundColor: Theme.of(context).colorScheme.secondary,
                       child: Text('${(index + 1)}'),
                     ),
                     title: Text(
                       details[index],
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   );
           },

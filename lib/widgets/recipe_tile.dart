@@ -60,13 +60,12 @@ class RecipeTile extends StatelessWidget {
     // This command "completes" when the .pushNamed screen is no longer visible
     // When "complete", .pushNamed returns an object(s)
     // (null if not specified in .pop())
-    Navigator.of(context)
-        .pushNamed(
+    Navigator.of(context).pushNamed(
       RecipeDetailScreen.routeName,
       arguments: id,
     );
-		// This was required for temporary removal of recipe - changed to
-		// favourite recipe
+    // This was required for temporary removal of recipe - changed to
+    // favourite recipe
     //     .then(
     //   (result) {
     //     if (result != null) {
@@ -81,7 +80,6 @@ class RecipeTile extends StatelessWidget {
     return InkWell(
       onTap: () => selectRecipe(context),
       child: Card(
-        // Could use ClipRRect, but Card widget supports this internally
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Layout.RADIUS),
         ),
@@ -117,18 +115,12 @@ class RecipeTile extends StatelessWidget {
   }
 
   Widget _buildTitle(context) {
-    // Position items when within a stack at distance from argument
     return Positioned(
       bottom: Layout.SPACING,
       right: Layout.SPACING / 2,
-      // The container is required for the softWrap and overFlow Text arguments
-      // As well background styling for white text
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
-        // width: 300,
-        // Colors.black54 is black with 54%transparency
-        // color: Colors.black54,
-        padding: EdgeInsets.all(Layout.PADDING),
+        padding: EdgeInsets.all(Layout.SPACING),
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.54),
           borderRadius: BorderRadius.circular(Layout.RADIUS / 2),
@@ -139,9 +131,7 @@ class RecipeTile extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
-          // Wrap text within card container
           softWrap: true,
-          // If it doesn't fit in container, even with wrapping, it will fade
           overflow: TextOverflow.fade,
         ),
       ),
@@ -150,7 +140,7 @@ class RecipeTile extends StatelessWidget {
 
   Widget _buildFooter(context) {
     return Padding(
-      padding: const EdgeInsets.all(Layout.PADDING),
+      padding: const EdgeInsets.all(Layout.SPACING),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -169,7 +159,7 @@ class RecipeTile extends StatelessWidget {
         SizedBox(width: Layout.SPACING / 4),
         Text(
           text,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       ],
     );

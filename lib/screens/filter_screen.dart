@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/widgets/custom_app_bar.dart';
-import 'package:flutter_complete_guide/widgets/custom_drawer.dart';
 
 import '../styles/layout.dart';
 
-// Will require StatefulWidget since switch changes will have ripple effect
-// on RecipesScreen
 class FilterScreen extends StatefulWidget {
   static const routeName = '/filter_screen';
 
@@ -19,8 +15,6 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  // Set initial values with filterData passed as currentFilters
-  // from main.dart
   bool _isGlutenFree = false;
   bool _isLactoseFree = false;
   bool _isVegan = false;
@@ -37,73 +31,78 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(appBar: AppBar(), title: 'Filters'),
-      drawer: CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(Layout.SPACING),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'Adjust your recipe selection:',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: Layout.SPACING),
-              ListView(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  _buildSwitchListTile(
-                    'Gluten',
-                    'Only include gluten free meals',
-                    _isGlutenFree,
-                    (newValue) => setState(() {
-                      _isGlutenFree = newValue;
-                    }),
+    return Padding(
+      padding: const EdgeInsets.all(Layout.SPACING),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(height: Layout.SPACING),
+            Text(
+              'Adjust your recipe selection:',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            SizedBox(height: Layout.SPACING),
+            ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                _buildSwitchListTile(
+                  'Gluten free',
+                  'Only include gluten free meals',
+                  _isGlutenFree,
+                  (newValue) => setState(() {
+                    _isGlutenFree = newValue;
+                  }),
+                ),
+                _buildSwitchListTile(
+                  'Lactose free',
+                  'Only include lactose free meals',
+                  _isLactoseFree,
+                  (newValue) => setState(() {
+                    _isLactoseFree = newValue;
+                  }),
+                ),
+                _buildSwitchListTile(
+                  'Vegan',
+                  'Only include vegan meals',
+                  _isVegan,
+                  (newValue) => setState(() {
+                    _isVegan = newValue;
+                  }),
+                ),
+                _buildSwitchListTile(
+                  'Vegetarian',
+                  'Only include vegetarian meals',
+                  _isVegetarian,
+                  (newValue) => setState(() {
+                    _isVegetarian = newValue;
+                  }),
+                ),
+              ],
+            ),
+            SizedBox(height: Layout.SPACING),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Layout.SPACING * 4),
+              child: ElevatedButton(
+                onPressed: () {
+                  final selectedFilters = {
+                    'gluten': _isGlutenFree,
+                    'lactose': _isLactoseFree,
+                    'vegan': _isVegan,
+                    'vegetarian': _isVegetarian,
+                  };
+                  widget.applyFilters(selectedFilters);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Layout.RADIUS * 1.5),
                   ),
-                  _buildSwitchListTile(
-                    'Lactose',
-                    'Only include lactose free meals',
-                    _isLactoseFree,
-                    (newValue) => setState(() {
-                      _isLactoseFree = newValue;
-                    }),
-                  ),
-                  _buildSwitchListTile(
-                    'Vegan',
-                    'Only include vegan meals',
-                    _isVegan,
-                    (newValue) => setState(() {
-                      _isVegan = newValue;
-                    }),
-                  ),
-                  _buildSwitchListTile(
-                    'Vegetarian',
-                    'Only include vegetarian meals',
-                    _isVegetarian,
-                    (newValue) => setState(() {
-                      _isVegetarian = newValue;
-                    }),
-                  ),
-                ],
-              ),
-              SizedBox(height: Layout.SPACING / 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Layout.SPACING * 2),
-                child: ElevatedButton(
-                  // Need to use widget. inside state class, because
-                  // the saveFilters function is a property of
-                  // the widget, not the state object
-                  onPressed: () {
-                    final selectedFilters = {
-                      'gluten': _isGlutenFree,
-                      'lactose': _isLactoseFree,
-                      'vegan': _isVegan,
-                      'vegetarian': _isVegetarian,
-                    };
-                    widget.applyFilters(selectedFilters);
-                  },
+                  elevation: Layout.ELEVATION,
+                  textStyle: Theme.of(context).textTheme.titleLarge,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(Layout.SPACING * 0.8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -112,16 +111,15 @@ class _FilterScreenState extends State<FilterScreen> {
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
   }
 
   Widget _buildSwitchListTile(String title, String subtitle, bool currentValue, Function(bool) updateValue) {
-// Note we have to manage the state of the SwitchListTile
     return SwitchListTile(
       title: Text(title),
       subtitle: Text(subtitle),
